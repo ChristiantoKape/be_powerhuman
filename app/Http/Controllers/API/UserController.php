@@ -13,20 +13,26 @@ use Laravel\Fortify\Rules\Password;
 
 class UserController extends Controller
 {
+    /**
+     * Login user function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function login(Request $request)
     {
         try {
 
             // Validate request
             $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
+                'email' => ['required', 'email'],
+                'password' => ['required'],
             ]);
 
             // Find user by email
             $user = User::where('email', $request->email)->firstOrFail();
             if (!Hash::check($request->password, $user->password)) {
-                return ResponseFormatter::error('Invalid password', 401);
+                throw new Exception('Invalid password');
             }
 
             // Generate token
@@ -45,6 +51,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Register user function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function register(Request $request)
     {
         try {
@@ -79,6 +91,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Logout user function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function logout(Request $request)
     {
         // Revoke Token
@@ -88,6 +106,12 @@ class UserController extends Controller
         return ResponseFormatter::success($token, 'Logout success');
     }
 
+    /**
+     * Get user function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function fetch(Request $request)
     {
         // Get user
