@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\CompanyController;
-use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\TeamController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,22 @@ Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(fu
     Route::get('', [CompanyController::class, 'index'])->name('index');
     Route::post('', [CompanyController::class, 'store'])->name('store');
     Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
+});
+
+// Team API
+Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function () {
+    Route::get('', [TeamController::class, 'index'])->name('index');
+    Route::post('', [TeamController::class, 'store'])->name('store');
+    Route::post('update/{id}', [TeamController::class, 'update'])->name('update');
+    Route::delete('{id}', [TeamController::class, 'destroy'])->name('destroy');
+});
+
+// Role API
+Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function () {
+    Route::get('', [RoleController::class, 'index'])->name('index');
+    Route::post('', [RoleController::class, 'store'])->name('store');
+    Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
+    Route::delete('{id}', [RoleController::class, 'destroy'])->name('destroy');
 });
 
 // Auth API

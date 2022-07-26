@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Company::factory(10)->create();
-        // Team::factory(5)->create();
+        // Company::factory(10)->create();
+        // Team::factory(20)->create();
         // Role::factory(40)->create();
         // Responsibility::factory(100)->create();
         // Employee::factory(1000)->create();

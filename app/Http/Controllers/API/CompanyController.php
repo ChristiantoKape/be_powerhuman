@@ -68,10 +68,13 @@ class CompanyController extends Controller
                 $path = $request->file('logo')->store('public/logos');
             }
 
+            // Trim name if not upload logo
+            $trim_name = str_replace(' ', '', $request->name);
+
             // Create companies
             $company = Company::create([
                 'name' => $request->name,
-                'logo' => $path,
+                'logo' => isset($path) ? $path : 'https://ui-avatars.com/api/?name=' . $trim_name . '',
             ]);
 
             if (!$company) {
@@ -87,19 +90,8 @@ class CompanyController extends Controller
 
             return ResponseFormatter::success($company, 'Company created');
         } catch (Exception $e) {
-            return ResponseFormatter::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -128,23 +120,12 @@ class CompanyController extends Controller
             // Update company
             $company->update([
                 'name' => $request->name,
-                'logo' => $path
+                'logo' => isset($path) ? $path : $company->icon,
             ]);
 
             return ResponseFormatter::success($company, 'Company updated');
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
